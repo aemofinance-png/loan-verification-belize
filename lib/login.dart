@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:belizelogin/firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:async';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,9 +15,15 @@ class _LoginScreenState extends State<LoginScreen> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isLoading = false;
-
+  final List<String> _images = [
+    'assets/images/cc-features.png',
+    'assets/images/financial_inclusion.png',
+  ];
+  int _currentIndex = 0;
+  late Timer _timer;
   @override
   void dispose() {
+    _timer.cancel();
     _usernameController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -27,6 +34,12 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     _usernameController.addListener(() => setState(() {}));
     _passwordController.addListener(() => setState(() {}));
+
+    _timer = Timer.periodic(const Duration(seconds: 3), (_) {
+      setState(() {
+        _currentIndex = (_currentIndex + 1) % _images.length;
+      });
+    });
   }
 
   bool get _fieldsfilled =>
@@ -99,113 +112,144 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 24.0, right: 24, bottom: 150),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              // borderRadius: BorderRadius.circular(25),
-            ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              Color(0xFF1565C0),
+              Color(0xFF1565C0),
+              Color(0xFF1565C0),
+              Color.fromARGB(255, 132, 179, 232),
+              // Color.fromARGB(255, 28, 149, 248),
+              // Color.fromARGB(255, 245, 251, 255),
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 48),
-                  Image.asset("assets/images/logo.png"),
-                  // Username field
-                  SizedBox(height: 90),
-                  TextField(
-                    controller: _usernameController,
-                    decoration: const InputDecoration(
-                      labelText: 'Username',
-                      border: UnderlineInputBorder(),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey),
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 32),
-
-                  // Password field
-                  TextField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Password *',
-                      border: UnderlineInputBorder(),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey),
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  // Forgot password
-                  GestureDetector(
-                    onTap: _onForgotPassword,
-                    child: const Text(
-                      'Forgot Password?',
-                      style: TextStyle(color: Colors.blue, fontSize: 16),
-                    ),
-                  ),
-
-                  const SizedBox(height: 32),
-
-                  // Sign in button
-                  SizedBox(
-                    width: double.infinity,
-                    height: 40,
-                    child: ElevatedButton(
-                      onPressed: _isLoading ? null : _onSignIn,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: _fieldsfilled
-                            ? const Color.fromRGBO(17, 134, 116, 1)
-                            : Colors.grey[300],
-                        foregroundColor: _fieldsfilled
-                            ? Colors.white
-                            : Colors.grey[600],
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+              padding: const EdgeInsets.only(bottom: 150),
+              child: Container(
+                width: 400,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  // borderRadius: BorderRadius.circular(25),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 48),
+                      Image.asset("assets/images/logo.png"),
+                      // Username field
+                      SizedBox(height: 90),
+                      TextField(
+                        controller: _usernameController,
+                        decoration: const InputDecoration(
+                          labelText: 'Username',
+                          border: UnderlineInputBorder(),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
                         ),
                       ),
-                      child: const Text(
-                        'SIGN IN',
-                        style: TextStyle(
-                          letterSpacing: 1.2,
-                          fontWeight: FontWeight.w500,
+
+                      const SizedBox(height: 32),
+
+                      // Password field
+                      TextField(
+                        controller: _passwordController,
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          labelText: 'Password *',
+                          border: UnderlineInputBorder(),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
 
-                  const SizedBox(height: 50),
+                      const SizedBox(height: 24),
 
-                  // Enroll row
-                  Center(
-                    child: Column(
-                      children: [
-                        const Text(
-                          "Don't have an account?",
-                          style: TextStyle(color: Colors.black87),
-                        ),
-                        const Text(
-                          'Enroll now',
+                      // Forgot password
+                      GestureDetector(
+                        onTap: _onForgotPassword,
+                        child: const Text(
+                          'Forgot Password?',
                           style: TextStyle(color: Colors.blue, fontSize: 16),
                         ),
-                        const SizedBox(height: 50),
-                        Image.asset("assets/images/cc-features.png"),
-                      ],
-                    ),
-                  ),
+                      ),
 
-                  const SizedBox(height: 32),
-                ],
+                      const SizedBox(height: 32),
+
+                      // Sign in button
+                      SizedBox(
+                        width: double.infinity,
+                        height: 40,
+                        child: ElevatedButton(
+                          onPressed: _isLoading ? null : _onSignIn,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: _fieldsfilled
+                                ? const Color.fromRGBO(17, 134, 116, 1)
+                                : Colors.grey[300],
+                            foregroundColor: _fieldsfilled
+                                ? Colors.white
+                                : Colors.grey[600],
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: const Text(
+                            'SIGN IN',
+                            style: TextStyle(
+                              letterSpacing: 1.2,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 50),
+
+                      // Enroll row
+                      Center(
+                        child: Column(
+                          children: [
+                            const Text(
+                              "Don't have an account?",
+                              style: TextStyle(color: Colors.black87),
+                            ),
+                            const Text(
+                              'Enroll now',
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 16,
+                              ),
+                            ),
+                            const SizedBox(height: 50),
+                            AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 1200),
+                              child: Image.asset(
+                                _images[_currentIndex],
+                                key: ValueKey(
+                                  _currentIndex,
+                                ), // required for AnimatedSwitcher
+                                height: 200,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 32),
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
