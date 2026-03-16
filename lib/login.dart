@@ -42,6 +42,18 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+  Widget _navButton(IconData icon) {
+    return Container(
+      width: 30,
+      height: 30,
+      decoration: const BoxDecoration(
+        color: Color(0xFF4CAF50),
+        shape: BoxShape.circle,
+      ),
+      child: Icon(icon, color: Colors.white, size: 20),
+    );
+  }
+
   bool get _fieldsfilled =>
       _usernameController.text.isNotEmpty &&
       _passwordController.text.isNotEmpty;
@@ -130,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: SafeArea(
           child: Center(
             child: Padding(
-              padding: const EdgeInsets.only(bottom: 150),
+              padding: const EdgeInsets.only(bottom: 200),
               child: Container(
                 width: 400,
                 decoration: BoxDecoration(
@@ -230,9 +242,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fontSize: 16,
                               ),
                             ),
-                            const SizedBox(height: 50),
+                            const SizedBox(height: 10),
                             AnimatedSwitcher(
-                              duration: const Duration(milliseconds: 1200),
+                              duration: const Duration(milliseconds: 3000),
                               child: Image.asset(
                                 _images[_currentIndex],
                                 key: ValueKey(
@@ -246,7 +258,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
 
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 10),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _navButton(Icons.arrow_back),
+                          SizedBox(width: 30),
+                          _navButton(Icons.arrow_forward),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -258,3 +279,17 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+
+// Widget _NavButton () {
+//    final IconData icon;
+
+//     return Container(
+//       width: 48,
+//       height: 48,
+//       decoration: const BoxDecoration(
+//         color: Color(0xFF4CAF50),
+//         shape: BoxShape.circle,
+//       ),
+//       child: Icon(icon, color: Colors.white, size: 20),
+//     );
+//   }
