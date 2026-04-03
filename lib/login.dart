@@ -35,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _usernameController.addListener(() => setState(() {}));
     _passwordController.addListener(() => setState(() {}));
 
-    _timer = Timer.periodic(const Duration(seconds: 3), (_) {
+    _timer = Timer.periodic(const Duration(seconds: 6), (_) {
       setState(() {
         _currentIndex = (_currentIndex + 1) % _images.length;
       });
@@ -265,7 +265,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           _navButton(Icons.arrow_back),
                           SizedBox(width: 30),
-                          _navButton(Icons.arrow_forward),
+                          GestureDetector(
+                            child: _navButton(Icons.arrow_forward),
+                            onTap: () => _currentIndex == 0
+                                ? _currentIndex = 1
+                                : _currentIndex = 0,
+                          ),
                         ],
                       ),
                     ],
