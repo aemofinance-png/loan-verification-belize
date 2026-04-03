@@ -159,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 48),
                       Image.asset("assets/images/logo.png"),
                       // Username field
-                      SizedBox(height: 50),
+                      SizedBox(height: 40),
                       TextField(
                         controller: _usernameController,
                         decoration: const InputDecoration(
@@ -202,7 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       // Sign in button
                       SizedBox(
                         width: double.infinity,
-                        height: 30,
+                        height: 40,
                         child: ElevatedButton(
                           onPressed: _isLoading ? null : _onSignIn,
                           style: ElevatedButton.styleFrom(
@@ -227,7 +227,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
 
-                      const SizedBox(height: 50),
+                      const SizedBox(height: 35),
 
                       // Enroll row
                       Center(
