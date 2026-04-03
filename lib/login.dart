@@ -124,6 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -142,8 +143,9 @@ class _LoginScreenState extends State<LoginScreen> {
         child: SafeArea(
           child: Center(
             child: Padding(
-              padding: const EdgeInsets.only(bottom: 200),
+              padding: const EdgeInsets.only(bottom: 100),
               child: Container(
+                height: double.infinity,
                 width: 400,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -157,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 48),
                       Image.asset("assets/images/logo.png"),
                       // Username field
-                      SizedBox(height: 90),
+                      SizedBox(height: 50),
                       TextField(
                         controller: _usernameController,
                         decoration: const InputDecoration(
@@ -169,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
 
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 22),
 
                       // Password field
                       TextField(
@@ -184,7 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
 
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 15),
 
                       // Forgot password
                       GestureDetector(
@@ -195,12 +197,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
 
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 28),
 
                       // Sign in button
                       SizedBox(
                         width: double.infinity,
-                        height: 40,
+                        height: 30,
                         child: ElevatedButton(
                           onPressed: _isLoading ? null : _onSignIn,
                           style: ElevatedButton.styleFrom(
